@@ -205,3 +205,25 @@ class TBarRect {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    tbr : TBarRect = new TBarRect()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.tbr.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.tbr.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.tbr.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
